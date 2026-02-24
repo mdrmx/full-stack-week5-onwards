@@ -16,6 +16,7 @@ body {
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
+  padding-left: 1rem;
 }
 #menu-btn {
   display: flex;
@@ -51,7 +52,8 @@ body {
 } */
 
 #search-container {
-  padding: 10px;
+  margin-top: 1rem;
+  margin-left: 1rem;
   display: flex;
 }
 
