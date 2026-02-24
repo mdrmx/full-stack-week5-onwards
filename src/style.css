@@ -8,3 +8,8 @@ body {
   padding: 0%;
   margin: 0%;
 }
+
+#content-div {
+  display: flex;
+  justify-content: center;
+}

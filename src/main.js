@@ -1,6 +1,7 @@
 import { initTitleBar } from "./components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
 import { geocoding } from "./apiRouter.js";
+import { weatherCard } from "./components/ui_components/weatherCard.js";
 import "./style.css";
 function initApp() {
   const app = document.getElementById("app");
@@ -20,6 +21,7 @@ function initApp() {
   const titleBar = initTitleBar(props);
 
   const contentDiv = document.createElement("div");
+  contentDiv.id = "content-div";
 
   const search = searchInput({
     placeholder: "Enter town or city...",
@@ -27,8 +29,11 @@ function initApp() {
     onButtonClick: handleButtonClick,
   });
 
+  const weather = weatherCard();
+
   app.appendChild(titleBar);
   contentDiv.appendChild(search);
+  contentDiv.appendChild(weather);
   app.appendChild(contentDiv);
 }
 
@@ -39,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const handleKeyInput = (event, inputElement) => {
   if (event.key === "Enter") {
     const query = inputElement.value.trim();
-    console.log(query);
+    // console.log(query);
     geocoding(query);
     inputElement.value = "";
   }

@@ -1,4 +1,4 @@
-const apiKey = "YOUR_API_KEY";
+const apiKey = "b7888b07411ce564248053345ab0dbdd";
 
 export async function geocoding(placename) {
   const url = `http://api.openweathermap.org/geo/1.0/direct?q=${placename}&limit=1&appid=${apiKey}`;
@@ -16,4 +16,6 @@ async function getWeatherData(lat, lon) {
   const response = await fetch(url);
   const data = await response.json();
   console.log(data);
+  const tempDiv = document.getElementById("current-temp");
+  tempDiv.textContent = `temp: ${data.current.temp}, humidity: ${data.current.humidity}`;
 }
