@@ -1,4 +1,4 @@
-const apiKey = "b7888b07411ce564248053345ab0dbdd";
+const apiKey = "YOUR_API_KEY";
 
 export async function geocoding(placename) {
   const url = `http://api.openweathermap.org/geo/1.0/direct?q=${placename}&limit=1&appid=${apiKey}`;
