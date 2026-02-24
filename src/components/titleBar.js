@@ -1,20 +1,18 @@
-import { menuBtn } from "./ui_components/menuBtn.js";
-import { createMenuPanel } from "./ui_components/menuPanel.js";
+import { menu } from "./ui_components/menu.js";
+import "./titleBar.css";
 
-export function initTitleBar() {
+export function initTitleBar({ title, searchBar = {}, menuConfig = {} }) {
   const titleDiv = document.createElement("div");
   titleDiv.id = "title-div";
 
   const h1 = document.createElement("h1");
-  h1.textContent = "my module based website";
+  h1.textContent = title;
 
-  const hamburger = menuBtn();
-
-  const menu = createMenuPanel();
-
+  const { menuBtn, menuPanel } = menu({ menuConfig });
+  console.log(menuConfig);
   titleDiv.appendChild(h1);
-  titleDiv.appendChild(hamburger);
-  titleDiv.appendChild(menu);
+  titleDiv.appendChild(menuBtn);
+  titleDiv.appendChild(menuPanel);
 
   return titleDiv;
 }

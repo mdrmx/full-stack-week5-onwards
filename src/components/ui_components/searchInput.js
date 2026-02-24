@@ -1,10 +1,12 @@
-export function searchInput({ onInputKeyPress, onButtonClick }) {
+import "./searchInput.css";
+
+export function searchInput({ placeholder, onInputKeyPress, onButtonClick }) {
   const container = document.createElement("div");
   container.id = "search-container";
 
   const search = document.createElement("input");
   search.type = "text";
-  search.placeholder = "Enter a town or city";
+  search.placeholder = placeholder;
   search.id = "search-input";
 
   //keycode detection
