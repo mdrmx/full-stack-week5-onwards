@@ -2,10 +2,10 @@ import "./weatherTile.css";
 
 export function weatherTile(temp, summaryText, icon) {
   const weatherTileDiv = document.createElement("div");
-  weatherTileDiv.class = "weather-tile-div";
+  weatherTileDiv.className = "weather-tile-div";
 
   const tempDiv = document.createElement("div");
-  tempDiv.class = "current-temp";
+  tempDiv.className = "current-temp";
   tempDiv.innerHTML = temp;
 
   const summary = document.createElement("div");
@@ -27,10 +27,6 @@ export function dailyForecast(currentData, dailyData) {
   if (dailyExisting) {
     contentDiv.removeChild(dailyExisting);
   }
-
-  console.log(currentData);
-  console.log(dailyData);
-
   const dailyContainer = document.createElement("div");
   dailyContainer.id = "daily-container";
 

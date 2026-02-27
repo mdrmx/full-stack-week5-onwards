@@ -1,7 +1,6 @@
 import { initTitleBar } from "./components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
 import { geocoding } from "./apiRouter.js";
-import { weatherTile } from "./components/ui_components/weatherTile.js";
 import "./style.css";
 
 function initApp() {
@@ -31,11 +30,9 @@ function initApp() {
     onButtonClick: handleButtonClick,
   });
 
-  // const weather = weatherTile();
+  contentDiv.appendChild(search);
 
   app.appendChild(titleBar);
-  contentDiv.appendChild(search);
-  // contentDiv.appendChild(weather);
   app.appendChild(contentDiv);
 }
 
