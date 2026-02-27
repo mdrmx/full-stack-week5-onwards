@@ -1,3 +1,4 @@
+import { dailyForecast } from "./components/ui_components/weatherTile.js";
 const apiKey = "b7888b07411ce564248053345ab0dbdd";
 
 export async function geocoding(placename) {
@@ -16,6 +17,6 @@ async function getWeatherData(lat, lon) {
   const response = await fetch(url);
   const data = await response.json();
   console.log(data);
-  const tempDiv = document.getElementById("current-temp");
-  tempDiv.textContent = `temp: ${data.current.temp}, humidity: ${data.current.humidity}`;
+
+  dailyForecast(data.current, data.daily);
 }

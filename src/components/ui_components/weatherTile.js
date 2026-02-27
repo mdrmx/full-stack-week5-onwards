@@ -1,10 +1,47 @@
-export function weatherTile() {
+import "./weatherTile.css";
+
+export function weatherTile(temp, summaryText, icon) {
   const weatherTileDiv = document.createElement("div");
-  weatherTileDiv.id = "weather-tile-div";
+  weatherTileDiv.class = "weather-tile-div";
 
-  const temp = document.createElement("div");
-  temp.id = "current-temp";
+  const tempDiv = document.createElement("div");
+  tempDiv.class = "current-temp";
+  tempDiv.innerHTML = temp;
 
-  weatherTileDiv.appendChild(temp);
+  const summary = document.createElement("div");
+  summary.innerHTML = summaryText;
+
+  const iconImg = document.createElement("img");
+  iconImg.src = `https://openweathermap.org/payload/api/media/file/${icon}.png`;
+
+  weatherTileDiv.appendChild(tempDiv);
+  weatherTileDiv.appendChild(summary);
+  weatherTileDiv.appendChild(iconImg);
   return weatherTileDiv;
+}
+
+export function dailyForecast(currentData, dailyData) {
+  const contentDiv = document.getElementById("content-div");
+  const dailyExisting = document.getElementById("daily-container");
+
+  if (dailyExisting) {
+    contentDiv.removeChild(dailyExisting);
+  }
+
+  console.log(currentData);
+  console.log(dailyData);
+
+  const dailyContainer = document.createElement("div");
+  dailyContainer.id = "daily-container";
+
+  for (let i = 0; i < dailyData.length; i++) {
+    const tile = weatherTile(
+      dailyData[i].temp.max,
+      dailyData[i].summary,
+      dailyData[i].weather[0].icon,
+    );
+    dailyContainer.appendChild(tile);
+  }
+
+  contentDiv.appendChild(dailyContainer);
 }

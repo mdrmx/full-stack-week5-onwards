@@ -9,10 +9,10 @@ function initApp() {
 
   // Title Bar Configuration with props
   const props = {
-    title: "Weather App",
+    title: "title",
     menuConfig: {
       menuIcon: "\u2630",
-      menuStyle: "small",
+      menuStyle: "large",
       menuItems: [
         { text: "About", href: "about" },
         { text: "Contact", href: "contact" },
@@ -31,11 +31,11 @@ function initApp() {
     onButtonClick: handleButtonClick,
   });
 
-  const weather = weatherTile();
+  // const weather = weatherTile();
 
   app.appendChild(titleBar);
   contentDiv.appendChild(search);
-  contentDiv.appendChild(weather);
+  // contentDiv.appendChild(weather);
   app.appendChild(contentDiv);
 }
 

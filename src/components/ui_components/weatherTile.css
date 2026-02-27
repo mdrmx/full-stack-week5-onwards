@@ -1,0 +1,11 @@
+#daily-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.weather-tile-div {
+  border-style: solid;
+  background-color: aqua;
+  padding: 10px;
+}
