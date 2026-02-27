@@ -1,16 +1,18 @@
 import { initTitleBar } from "./components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
 import { geocoding } from "./apiRouter.js";
-import { weatherCard } from "./components/ui_components/weatherCard.js";
+import { weatherTile } from "./components/ui_components/weatherTile.js";
 import "./style.css";
+
 function initApp() {
   const app = document.getElementById("app");
 
+  // Title Bar Configuration with props
   const props = {
     title: "Weather App",
     menuConfig: {
       menuIcon: "\u2630",
-      menuStyle: "large",
+      menuStyle: "small",
       menuItems: [
         { text: "About", href: "about" },
         { text: "Contact", href: "contact" },
@@ -29,7 +31,7 @@ function initApp() {
     onButtonClick: handleButtonClick,
   });
 
-  const weather = weatherCard();
+  const weather = weatherTile();
 
   app.appendChild(titleBar);
   contentDiv.appendChild(search);
