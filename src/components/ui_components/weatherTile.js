@@ -6,7 +6,7 @@ export function weatherTile(temp, summaryText, icon) {
 
   const tempDiv = document.createElement("div");
   tempDiv.className = "current-temp";
-  tempDiv.innerHTML = temp;
+  tempDiv.innerHTML = temp + "ºC";
 
   const summary = document.createElement("div");
   summary.innerHTML = summaryText;
@@ -15,8 +15,9 @@ export function weatherTile(temp, summaryText, icon) {
   iconImg.src = `https://openweathermap.org/payload/api/media/file/${icon}.png`;
 
   weatherTileDiv.appendChild(tempDiv);
-  weatherTileDiv.appendChild(summary);
+
   weatherTileDiv.appendChild(iconImg);
+  weatherTileDiv.appendChild(summary);
   return weatherTileDiv;
 }
 

@@ -9,7 +9,7 @@ export function initTitleBar({ title, searchBar = {}, menuConfig = {} }) {
   h1.textContent = title;
 
   const { menuBtn, menuPanel } = menu({ menuConfig });
-  console.log(menuConfig);
+
   titleDiv.appendChild(h1);
   titleDiv.appendChild(menuBtn);
   titleDiv.appendChild(menuPanel);

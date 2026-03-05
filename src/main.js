@@ -11,11 +11,12 @@ function initApp() {
     title: "title",
     menuConfig: {
       menuIcon: "\u2630",
-      menuStyle: "large",
+      menuStyle: "small",
       menuItems: [
         { text: "About", href: "about" },
         { text: "Contact", href: "contact" },
         { text: "Services", href: "services" },
+        { text: "Settings", href: "settings" },
       ],
     },
   };
@@ -43,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 const handleKeyInput = (event, inputElement) => {
   if (event.key === "Enter") {
     const query = inputElement.value.trim();
-    // console.log(query);
     geocoding(query);
     inputElement.value = "";
   }
