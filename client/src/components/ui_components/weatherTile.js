@@ -22,7 +22,7 @@ export function weatherTile(temp, summaryText, icon) {
 }
 
 // Re-render the daily forecast list, replacing previous results if needed.
-export function dailyForecast(currentData, dailyData) {
+export function dailyForecast(name, currentData, dailyData) {
   const contentDiv = document.getElementById("content-div");
   const dailyExisting = document.getElementById("daily-container");
 
@@ -32,6 +32,14 @@ export function dailyForecast(currentData, dailyData) {
   const dailyContainer = document.createElement("div");
   dailyContainer.id = "daily-container";
 
+  const placeName = document.createElement("h2");
+  placeName.textContent = name;
+  dailyContainer.appendChild(placeName);
+
+  const forecastContainer = document.createElement("div");
+  forecastContainer.className = "forecast-container";
+  dailyContainer.appendChild(forecastContainer);
+
   // Build one tile per day from API forecast data.
   for (let i = 0; i < dailyData.length; i++) {
     const tile = weatherTile(
@@ -39,7 +47,7 @@ export function dailyForecast(currentData, dailyData) {
       dailyData[i].summary,
       dailyData[i].weather[0].icon,
     );
-    dailyContainer.appendChild(tile);
+    forecastContainer.appendChild(tile);
   }
 
   contentDiv.appendChild(dailyContainer);
