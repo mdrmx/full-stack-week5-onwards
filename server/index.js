@@ -14,8 +14,9 @@ async function geocoding(placename) {
     const response = await fetch(url);
     const data = await response.json();
     // OpenWeather geocoding returns a list of matches; use the first result.
-    const { lat, lon } = data[0];
-    getWeatherData(lat, lon);
+    const { name, lat, lon } = data[0];
+    const weather = await getWeatherData(lat, lon);
+    return { name, weather };
   } catch {
     // Ignore fetch/parse errors so failed lookups do not break the app.
   }
@@ -26,14 +27,19 @@ async function getWeatherData(lat, lon) {
   const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data);
+  return data;
 }
 
-app.get("/weather", (req, res) => {
+app.get("/weather", async (req, res) => {
   console.log(req.query);
   const { placename } = req.query;
-  geocoding(placename);
-  res.send({ messag: "weather API" });
+  const data = await geocoding(placename);
+
+  res.send(data);
+});
+
+app.post("/favourites", (req, res) => {
+  console.log("this is the favourites endpoint");
 });
 
 app.listen(port, () => {

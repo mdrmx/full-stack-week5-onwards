@@ -1,6 +1,8 @@
 import { initTitleBar } from "./components/ui_components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
 import { weatherApi } from "./apiRouter.js";
+import { dailyForecast } from "./components/ui_components/weatherTile.js";
+import { favButton } from "./components/ui_components/favButton.js";
 import "./style.css";
 
 // Build the static page shell once the app container is available.
@@ -34,6 +36,8 @@ function initApp() {
 
   contentDiv.appendChild(search);
 
+  const favourites = favButton({ onButtonClick: handleFavClick });
+
   app.appendChild(titleBar);
   app.appendChild(contentDiv);
 }
@@ -46,17 +50,21 @@ document.addEventListener("DOMContentLoaded", () => {
 const handleKeyInput = (event, inputElement) => {
   // Submit the search when the user presses Enter in the input.
   if (event.key === "Enter") {
-    const query = inputElement.value.trim();
-    geocoding(query);
-    inputElement.value = "";
+    handleButtonClick(event, inputElement);
   }
 };
 
-const handleButtonClick = (event, inputElement) => {
+const handleButtonClick = async (event, inputElement) => {
   // Submit the search when the search button is clicked.
   const query = inputElement.value.trim();
   console.log(query);
   // geocoding(query);
-  weatherApi(query);
+
+  const data = await weatherApi(query);
+  console.log(data);
+  dailyForecast(data.name, data.weather.current, data.weather.daily);
+
   inputElement.value = "";
 };
+
+const handleFavClick = async (event) => {};

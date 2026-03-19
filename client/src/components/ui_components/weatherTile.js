@@ -22,8 +22,13 @@ export function weatherTile(temp, summaryText, icon) {
 }
 
 // Re-render the daily forecast list, replacing previous results if needed.
-export function dailyForecast(currentData, dailyData) {
+export function dailyForecast(name, currentData, dailyData) {
   const contentDiv = document.getElementById("content-div");
+
+  const placename = document.createElement("h2");
+  placename.innerText = name;
+  contentDiv.appendChild(placename);
+
   const dailyExisting = document.getElementById("daily-container");
 
   if (dailyExisting) {
