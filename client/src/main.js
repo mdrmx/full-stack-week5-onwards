@@ -1,12 +1,12 @@
 import { initTitleBar } from "./components/ui_components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
-import { weatherApi } from "./apiRouter.js";
+import { weatherApi, addFavourite, getFavourites } from "./apiRouter.js";
 import { dailyForecast } from "./components/ui_components/weatherTile.js";
-import { favButton } from "./components/ui_components/favButton.js";
+import { favButton, favList } from "./components/ui_components/favourites.js";
 import "./style.css";
 
 // Build the static page shell once the app container is available.
-function initApp() {
+async function initApp() {
   const app = document.getElementById("app");
 
   // Title Bar Configuration with props
@@ -36,7 +36,20 @@ function initApp() {
 
   contentDiv.appendChild(search);
 
-  const favourites = favButton({ onButtonClick: handleFavClick });
+  //week 9 add fav button to page
+  const favourite = favButton({ onButtonClick: handleFavClick });
+  contentDiv.appendChild(favourite);
+
+  //week 9 add fav list to page
+  const favs = await getFavourites();
+  const favListComponent = favList({
+    favourites: favs.data,
+    onSelect: async (placename) => {
+      const data = await weatherApi(placename);
+      dailyForecast(data.name, data.weather.current, data.weather.daily);
+    },
+  });
+  contentDiv.appendChild(favListComponent);
 
   app.appendChild(titleBar);
   app.appendChild(contentDiv);
@@ -61,10 +74,20 @@ const handleButtonClick = async (event, inputElement) => {
   // geocoding(query);
 
   const data = await weatherApi(query);
-  console.log(data);
+
   dailyForecast(data.name, data.weather.current, data.weather.daily);
 
   inputElement.value = "";
 };
 
-const handleFavClick = async (event) => {};
+//week 9 add fav button click handler
+const handleFavClick = async (event) => {
+  const placenameEl = document.getElementById("placename");
+  if (!placenameEl) {
+    console.log("No placename - search for a city first");
+    return;
+  }
+  const query = placenameEl.textContent;
+  const result = await addFavourite(query);
+  console.log("result:", result);
+};

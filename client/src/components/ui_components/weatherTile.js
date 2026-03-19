@@ -25,9 +25,16 @@ export function weatherTile(temp, summaryText, icon) {
 export function dailyForecast(name, currentData, dailyData) {
   const contentDiv = document.getElementById("content-div");
 
-  const placename = document.createElement("h2");
-  placename.innerText = name;
-  contentDiv.appendChild(placename);
+  // week 9 Update existing placename or create new one
+  let placename = document.getElementById("placename");
+  if (placename) {
+    placename.innerText = name;
+  } else {
+    placename = document.createElement("h2");
+    placename.id = "placename";
+    placename.innerText = name;
+    contentDiv.appendChild(placename);
+  }
 
   const dailyExisting = document.getElementById("daily-container");
 
