@@ -2,7 +2,11 @@ import { initTitleBar } from "./components/ui_components/titleBar.js";
 import { searchInput } from "./components/ui_components/searchInput.js";
 import { weatherApi, addFavourite, getFavourites } from "./apiRouter.js";
 import { dailyForecast } from "./components/ui_components/weatherTile.js";
-import { favButton, favList } from "./components/ui_components/favourites.js";
+import {
+  favButton,
+  favList,
+  updateFavList,
+} from "./components/ui_components/favourites.js";
 import "./style.css";
 
 // Build the static page shell once the app container is available.
@@ -11,10 +15,10 @@ async function initApp() {
 
   // Title Bar Configuration with props
   const props = {
-    title: "title",
+    title: "OpenWeatherApp",
     menuConfig: {
       menuIcon: "\u2630",
-      menuStyle: "small",
+      menuStyle: "large",
       menuItems: [
         { text: "About", href: "about" },
         { text: "Contact", href: "contact" },
@@ -25,34 +29,42 @@ async function initApp() {
   };
   const titleBar = initTitleBar(props);
 
+  // Main content div to hold search and forecast results
   const contentDiv = document.createElement("div");
   contentDiv.id = "content-div";
 
+  // Search input component with event handlers for user interactions
   const search = searchInput({
     placeholder: "Enter town or city...",
     onInputKeyPress: handleKeyInput,
     onButtonClick: handleButtonClick,
   });
 
-  contentDiv.appendChild(search);
+  //////////////////////////////
+  // week 9 favourite component and database integration
+  //////////////////////////////
 
-  //week 9 add fav button to page
-  const favourite = favButton({ onButtonClick: handleFavClick });
-  contentDiv.appendChild(favourite);
+  // Create the favourite button and list components
+  const favouriteButton = favButton({ onButtonClick: handleFavClick });
 
-  //week 9 add fav list to page
+  // Fetch any stored favourites from the API
   const favs = await getFavourites();
+  console.log("favourites retrieved from API:", favs);
+
+  // Create the favourite list component with the retrieved favourites and onSelect handler
   const favListComponent = favList({
     favourites: favs.data,
-    onSelect: async (placename) => {
-      const data = await weatherApi(placename);
-      dailyForecast(data.name, data.weather.current, data.weather.daily);
-    },
+    onSelect: handleFavSelect,
   });
-  contentDiv.appendChild(favListComponent);
 
+  // Append the title bar and content div to the app container
   app.appendChild(titleBar);
   app.appendChild(contentDiv);
+
+  // Add the search input, favourite button, and favourite list components to the page
+  contentDiv.appendChild(search);
+  contentDiv.appendChild(favouriteButton);
+  contentDiv.appendChild(favListComponent);
 }
 
 // Wait for DOM load so `#app` exists before mounting components.
@@ -60,6 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initApp();
 });
 
+//////////////////////////////////////
+//event handlers for user interactions
+//////////////////////////////////////
+// Event handler for search input keypress - submit search on Enter key
 const handleKeyInput = (event, inputElement) => {
   // Submit the search when the user presses Enter in the input.
   if (event.key === "Enter") {
@@ -67,27 +83,36 @@ const handleKeyInput = (event, inputElement) => {
   }
 };
 
+// Event handler for search button click - fetch weather data for input place name
 const handleButtonClick = async (event, inputElement) => {
   // Submit the search when the search button is clicked.
   const query = inputElement.value.trim();
-  console.log(query);
-  // geocoding(query);
-
   const data = await weatherApi(query);
-
   dailyForecast(data.name, data.weather.current, data.weather.daily);
-
   inputElement.value = "";
 };
 
-//week 9 add fav button click handler
+//week 9 event handler for fav button click - add current place name to favourites list
 const handleFavClick = async (event) => {
   const placenameEl = document.getElementById("placename");
-  if (!placenameEl) {
-    console.log("No placename - search for a city first");
-    return;
-  }
   const query = placenameEl.textContent;
-  const result = await addFavourite(query);
-  console.log("result:", result);
+  const favList = document.getElementById("fav-list");
+  for (let i = 0; i < favList.options.length; i++) {
+    if (favList.options[i].value === query) {
+      alert("This place is already in your favourites!");
+      return;
+    }
+  }
+
+  await addFavourite(query);
+  const favs = await getFavourites();
+  updateFavList(favs.data);
+};
+
+// week 9 event handler for selecting a favourite from the list - fetch weather data for selected favourite place name
+const handleFavSelect = async (event) => {
+  console.log(event);
+  const placename = event;
+  const data = await weatherApi(placename);
+  dailyForecast(data.name, data.weather.current, data.weather.daily);
 };

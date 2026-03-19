@@ -36,8 +36,8 @@ export function dailyForecast(name, currentData, dailyData) {
     contentDiv.appendChild(placename);
   }
 
+  // Remove existing daily forecast tiles if they exist before adding new ones.
   const dailyExisting = document.getElementById("daily-container");
-
   if (dailyExisting) {
     contentDiv.removeChild(dailyExisting);
   }
@@ -46,9 +46,10 @@ export function dailyForecast(name, currentData, dailyData) {
 
   // Build one tile per day from API forecast data.
   for (let i = 0; i < dailyData.length; i++) {
+    console.log("daily data for day " + i, dailyData[i]);
     const tile = weatherTile(
       dailyData[i].temp.max,
-      dailyData[i].summary,
+      dailyData[i].weather[0].description,
       dailyData[i].weather[0].icon,
     );
     dailyContainer.appendChild(tile);

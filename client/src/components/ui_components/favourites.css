@@ -1,5 +1,4 @@
 .fav-button {
-  margin-left: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,4 +8,8 @@
 
   font-size: 20px;
   cursor: pointer;
+}
+
+#fav-list {
+  width: 200px;
 }

@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 
-//week 9 add proxy to server for post route
+// week 9 add proxy to server for post route to save
+// favourite and get route to retrieve favourites
 
 export default defineConfig({
   server: {
