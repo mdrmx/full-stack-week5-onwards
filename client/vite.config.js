@@ -8,6 +8,16 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      "/addFavourite": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/getFavourites": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });

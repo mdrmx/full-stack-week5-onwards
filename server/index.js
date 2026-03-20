@@ -1,11 +1,26 @@
 import express from "express";
 import dotenv from "dotenv";
+import Database from "better-sqlite3";
 
+// server config
 dotenv.config();
-
 const app = express();
 const port = 3000;
 const apiKey = process.env.API_KEY;
+
+// insert JSON middleware
+app.use(express.json());
+
+// database config
+const db = new Database("favourites.db");
+
+// create data table
+db.prepare(
+  ` CREATE TABLE IF NOT EXISTS favourites(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    placename TEXT NOT NULL
+    )`,
+).run();
 
 // Resolve a place name to coordinates, then fetch weather for the top match.
 async function geocoding(placename) {
@@ -14,8 +29,9 @@ async function geocoding(placename) {
     const response = await fetch(url);
     const data = await response.json();
     // OpenWeather geocoding returns a list of matches; use the first result.
-    const { lat, lon } = data[0];
-    getWeatherData(lat, lon);
+    const { name, lat, lon } = data[0];
+    const weather = await getWeatherData(lat, lon);
+    return { name, weather };
   } catch {
     // Ignore fetch/parse errors so failed lookups do not break the app.
   }
@@ -26,14 +42,27 @@ async function getWeatherData(lat, lon) {
   const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data);
+  return data;
 }
 
-app.get("/weather", (req, res) => {
+app.get("/weather", async (req, res) => {
   console.log(req.query);
   const { placename } = req.query;
-  geocoding(placename);
-  res.send({ messag: "weather API" });
+  const data = await geocoding(placename);
+
+  res.send(data);
+});
+
+app.post("/addFavourite", (req, res) => {
+  console.log("this is the favourites endpoint");
+  const { placename } = req.body;
+  db.prepare("INSERT INTO favourites (placename) VALUES (?)").run(placename);
+  res.json({ success: true, data: req.body });
+});
+
+app.get("/getFavourites", (req, res) => {
+  const favourites = db.prepare("SELECT * FROM favourites").all();
+  res.json({ success: true, data: favourites });
 });
 
 app.listen(port, () => {
